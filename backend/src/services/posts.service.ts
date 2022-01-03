@@ -8,6 +8,14 @@ import { Model } from 'mongoose';
 export class PostsService {
   constructor(@InjectModel(Post.name) private postModel: Model<PostDocument>) {}
 
+  async findOne(postId: string): Promise<PostDocument> {
+    const post = await this.postModel.findOne({ _id: postId });
+    if (!post) {
+      throw new NotFoundException('This post does not exist.');
+    }
+    return post;
+  }
+
   async findAll(): Promise<PostDocument[]> {
     return this.postModel.find();
   }
