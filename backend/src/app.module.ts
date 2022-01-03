@@ -7,11 +7,10 @@ import { AppController } from './app.controller';
 import { CommentsController } from './controllers/comments.controller';
 import { CommentsService } from './services/comments.service';
 import { Comment, CommentSchema } from './models/comments/comments.schema';
-import { UsersService } from './services/users.service';
 import { AuthModule } from './auth/auth.module';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
-import { UsersModule } from './users/users.module';
 import { User, UserSchema } from './models/users/user.schema';
+import { UsersService } from './services/users.service';
 
 @Module({
   imports: [
@@ -28,9 +27,10 @@ import { User, UserSchema } from './models/users/user.schema';
   ],
   controllers: [AppController, PostsController, CommentsController],
   providers: [
+    { provide: 'APP_GUARD', useClass: JwtAuthGuard },
     PostsService,
     CommentsService,
-    { provide: 'APP_GUARD', useClass: JwtAuthGuard },
+    UsersService,
   ],
 })
 export class AppModule {}

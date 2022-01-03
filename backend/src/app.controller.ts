@@ -3,20 +3,24 @@ import {
   Request,
   Post,
   Get,
-  Body,
+  Body, UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth/auth.service';
 import { Public } from './auth/public.decorator';
-import { CreateUserDto } from './models/users/dto/createPost.dto';
+import { CreateUserDto } from './models/users/dto/create-user.dto';
 import { CurrentUserType } from './auth/current-user.type';
 import { CurrentUser } from './auth/current-user.decorator';
+import { UsersService } from './services/users.service';
+import { LocalAuthGuard } from "./auth/local-auth.guard";
 
 @Controller()
 export class AppController {
   constructor(
-    private readonly authService: AuthService
+    private readonly authService: AuthService,
+    private readonly usersService: UsersService,
   ) {}
 
+  @Public()
   @Post('register')
   async register(
     @Body() createUserDto: CreateUserDto,
@@ -27,6 +31,7 @@ export class AppController {
     };
   }
 
+  @UseGuards(LocalAuthGuard)
   @Public()
   @Post('login')
   async login(

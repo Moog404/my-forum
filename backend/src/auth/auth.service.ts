@@ -1,9 +1,10 @@
 import { ConflictException, Injectable } from '@nestjs/common';
 import { UsersService } from '../services/users.service';
 import { JwtService } from '@nestjs/jwt';
-import { CreateUserDto } from '../models/users/dto/createPost.dto';
-import { User } from '../models/users/user.schema';
+import { CreateUserDto } from '../models/users/dto/create-user.dto';
+import { User, UserDocument } from '../models/users/user.schema';
 import * as bcrypt from 'bcrypt';
+import { CurrentUserType } from './current-user.type';
 
 @Injectable()
 export class AuthService {
@@ -32,15 +33,22 @@ export class AuthService {
 
   async validateUser(username: string, pass: string): Promise<any> {
     const user = await this.usersService.findOne(username);
-    if (user && user.password === pass) {
-      const { password, ...result } = user;
-      return result;
+    if (!user) {
+      return null;
     }
+
+    const isMatch = await bcrypt.compare(pass, user.password);
+
+    if (isMatch) {
+      const { username, _id } = user as UserDocument;
+      return { username, _id };
+    }
+
     return null;
   }
 
-  async login(user: any) {
-    const payload = { username: user.username, sub: user.userId };
+  async login(user: CurrentUserType): Promise<{ access_token: string }> {
+    const payload: CurrentUserType = { username: user.username, _id: user._id };
     return {
       access_token: this.jwtService.sign(payload),
     };
