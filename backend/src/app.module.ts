@@ -11,6 +11,8 @@ import { AuthModule } from './auth/auth.module';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { User, UserSchema } from './models/users/user.schema';
 import { UsersService } from './services/users.service';
+import { EventEmitterModule } from '@nestjs/event-emitter';
+import {PostsEvent} from "./events/posts.event";
 
 @Module({
   imports: [
@@ -24,6 +26,7 @@ import { UsersService } from './services/users.service';
       { name: User.name, schema: UserSchema },
     ]),
     AuthModule,
+    EventEmitterModule.forRoot(),
   ],
   controllers: [AppController, PostsController, CommentsController],
   providers: [
@@ -31,6 +34,7 @@ import { UsersService } from './services/users.service';
     PostsService,
     CommentsService,
     UsersService,
+    PostsEvent,
   ],
 })
 export class AppModule {}

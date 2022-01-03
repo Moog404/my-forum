@@ -1,4 +1,4 @@
-import { IsDate, IsString } from 'class-validator';
+import {IsDate, IsMongoId, IsString} from 'class-validator';
 
 export class CreatePostDto {
   @IsString()
@@ -9,4 +9,7 @@ export class CreatePostDto {
 
   @IsDate()
   date: Date;
+
+  @IsMongoId()
+  user: string;
 }

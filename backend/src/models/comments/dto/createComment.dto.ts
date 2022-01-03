@@ -9,4 +9,8 @@ export class CreateCommentDto {
 
   @IsMongoId()
   post: string;
+
+  @IsMongoId()
+  required: true;
+  user: string;
 }

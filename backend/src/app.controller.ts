@@ -12,6 +12,7 @@ import { CurrentUserType } from './auth/current-user.type';
 import { CurrentUser } from './auth/current-user.decorator';
 import { UsersService } from './services/users.service';
 import { LocalAuthGuard } from "./auth/local-auth.guard";
+import {JwtAuthGuard} from "./auth/jwt-auth.guard";
 
 @Controller()
 export class AppController {
@@ -40,6 +41,7 @@ export class AppController {
     return this.authService.login(user);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get('profile')
   getProfile(@Request() req) {
     return req.user;
