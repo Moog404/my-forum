@@ -12,7 +12,10 @@ import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { User, UserSchema } from './models/users/user.schema';
 import { UsersService } from './services/users.service';
 import { EventEmitterModule } from '@nestjs/event-emitter';
-import {PostsEvent} from "./events/posts.event";
+import { PostsEvent } from './events/posts.event';
+import { LikesController } from './controllers/likes.controller';
+import { LikesService } from './services/likes.service';
+import { Like, LikeSchema } from './models/likes/likes.schema';
 
 @Module({
   imports: [
@@ -24,16 +27,23 @@ import {PostsEvent} from "./events/posts.event";
       { name: Post.name, schema: PostSchema },
       { name: Comment.name, schema: CommentSchema },
       { name: User.name, schema: UserSchema },
+      { name: Like.name, schema: LikeSchema },
     ]),
     AuthModule,
     EventEmitterModule.forRoot(),
   ],
-  controllers: [AppController, PostsController, CommentsController],
+  controllers: [
+    AppController,
+    PostsController,
+    CommentsController,
+    LikesController,
+  ],
   providers: [
     { provide: 'APP_GUARD', useClass: JwtAuthGuard },
     PostsService,
     CommentsService,
     UsersService,
+    LikesService,
     PostsEvent,
   ],
 })
