@@ -1,4 +1,4 @@
-import {IsDate, IsMongoId, IsString} from 'class-validator';
+import { IsDate, IsMongoId, IsString} from 'class-validator';
 
 export class CreatePostDto {
   @IsString()

@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Param, Post, Request} from '@nestjs/common';
 import { CreateCommentDto } from '../models/comments/dto/createComment.dto';
 import { CommentsService } from '../services/comments.service';
 import { Public } from '../auth/public.decorator';
@@ -14,12 +14,12 @@ export class CommentsController {
   }
 
   @Post()
-  async createOne(@Body() createCommentDto: CreateCommentDto) {
-    return this.commentsService.createOne(createCommentDto);
+  async createOne(@Body() createCommentDto: CreateCommentDto, @Request() req) {
+    return this.commentsService.createOne(createCommentDto, req.user._id);
   }
 
   @Delete(':commentId')
-  async deleteOne(@Param('commentId') commentId: string) {
-    return this.commentsService.deleteOne(commentId);
+  async deleteOne(@Param('commentId') commentId: string, @Request() req) {
+    return this.commentsService.deleteOne(commentId, req.user._id);
   }
 }

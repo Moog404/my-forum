@@ -15,18 +15,31 @@ export class CommentsService {
     return this.commentModel.find();
   }
 
-  async createOne(createCommentDto: CreateCommentDto): Promise<Comment> {
+  async createOne(
+    createCommentDto: CreateCommentDto,
+    userId: string,
+  ): Promise<Comment> {
     createCommentDto.date = new Date();
+    createCommentDto.user = userId;
     return new this.commentModel(createCommentDto).save();
   }
 
-  async deleteOne(commentId: string): Promise<CommentDocument> {
-    const comment = await this.commentModel.findOneAndDelete({
+  async deleteOne(commentId: string, userId: string): Promise<CommentDocument> {
+    const comment = await this.commentModel.findOne({
       _id: commentId,
     });
+
     if (!comment) {
       throw new NotFoundException();
     }
-    return comment;
+
+    if (comment.user.toString() === userId) {
+      const deletedComment = await this.commentModel.findOneAndDelete({
+        _id: commentId,
+      });
+      return deletedComment;
+    } else {
+      throw new NotFoundException('You are not allowed to delete this comment');
+    }
   }
 }
