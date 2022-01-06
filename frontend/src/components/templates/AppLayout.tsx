@@ -10,7 +10,7 @@ import Input from "../atoms/Input";
 
 const AppLayout = () => {
 
-  const [post, setPost] = useState(null)
+  const [post, setPost] = useState('')
 
   const loginUsername: React.RefObject<any> = createRef();
   const loginPassword: React.RefObject<any> = createRef();
@@ -79,7 +79,7 @@ const AppLayout = () => {
 
       <div className={"h-full bg-slate-900 grid grid-cols-4"}>
         <div className={"col-span-1 pl-16 pr-4 pt-10 flex flex-col gap-y-3 overflow-auto"}>
-          <Posts onSelect={(e: any) => setPost(e)} />
+          <Posts onSelect={(e: string) => setPost(e)} />
         </div>
         <div className={"col-span-2 min-h-0 border-x-2 border-slate-800 pt-10 px-4 pb-10"}>
           <Comments id={post} />

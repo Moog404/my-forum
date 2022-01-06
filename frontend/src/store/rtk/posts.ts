@@ -15,7 +15,7 @@ export const postsApi = createApi({
         result
           ?
           [
-            ...result.map((id: any) => ({ type: 'Posts', id } as const)),
+            ...result.map((id: string) => ({ type: 'Posts', id } as const)),
             { type: 'Posts' },
           ] :
           [{ type: 'Posts'}]

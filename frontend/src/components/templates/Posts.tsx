@@ -13,7 +13,7 @@ const Posts = (props: Props) => {
   return (
     <div className={"flex flex-col gap-y-4"}>
       { localStorage.getItem('access_token') &&
-        <InputAdd onSubmit={(e: any) => { addPost({title: e}) }} placeholder={'Créer un nouveau post'} />
+        <InputAdd onSubmit={(e: string) => { addPost({title: e}) }} placeholder={'Créer un nouveau post'} />
       }
       { !isLoading && data.map((post: any) =>
         <div key={post._id}>

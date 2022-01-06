@@ -5,7 +5,7 @@ interface Props {
 
 const Button = (props: Props) => {
 
-  const modifiers: any = {
+  const modifiers: { [key: string]: string } = {
     primary: 'shadow-indigo-600/50 bg-indigo-600 text-white',
     secondary: 'shadow-slate-600/50 bg-white text-indigo',
     danger: 'shadow-pink-600/50 bg-pink-600 text-white'
