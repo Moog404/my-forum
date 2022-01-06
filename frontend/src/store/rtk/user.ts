@@ -11,7 +11,7 @@ export const userApi = createApi({
                 method: 'GET',
                 data: { userId }
             })
-        })
+        }),
     })
 })
 

@@ -3,10 +3,31 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import {Provider} from "react-redux";
+import store from "./store";
+import api from "./services";
+
+api.interceptors.request.use(
+  async (config) => {
+    const state = store.getState()
+    if (state.user.access_token !== '') {
+      const { access_token } = state.user;
+      if(config && config.headers) {
+        config.headers['Authorization'] = `Bearer ${access_token}`
+      }
+    }
+    return config
+  },
+  (error) => {
+    return Promise.reject(error)
+  }
+)
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Provider store={store}>
+      <App />
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );
