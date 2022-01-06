@@ -14,8 +14,13 @@ const AppLayout = () => {
 
   const loginUsername: React.RefObject<any> = createRef();
   const loginPassword: React.RefObject<any> = createRef();
+
   const registerUsername: React.RefObject<any> = createRef();
+  const registerEmail: React.RefObject<any> = createRef();
   const registerPassword: React.RefObject<any> = createRef();
+  const registerFirstName: React.RefObject<any> = createRef();
+  const registerLastName: React.RefObject<any> = createRef();
+
 
   const login = () => {
     axios.post('http://localhost:3000/login', {username: loginUsername?.current.firstChild.value, password: loginPassword?.current.firstChild.value})
@@ -30,7 +35,15 @@ const AppLayout = () => {
   }
 
   const register = () => {
-    axios.post('http://localhost:3000/register', {username: registerUsername?.current.firstChild.value, password: registerPassword?.current.firstChild.value})
+    axios.post('http://localhost:3000/register',
+{
+        username: registerUsername?.current.firstChild.value,
+        email: registerEmail?.current.firstChild.value,
+        password: registerPassword?.current.firstChild.value,
+        firstName: registerFirstName?.current.firstChild.value,
+        lastName: registerLastName?.current.firstChild.value,
+    }
+  )
       .then(e => {
         if(e.status === 201) {
           eventBus.dispatch('popup', {id: 'register'});
@@ -68,10 +81,19 @@ const AppLayout = () => {
           <div ref={registerUsername}>
             <Input placeholder={"Login"} />
           </div>
+          <div ref={registerEmail}>
+            <Input placeholder={"Email"} />
+          </div>
           <div ref={registerPassword}>
             <Input placeholder={"Password"} />
           </div>
-          <div className={"flex flex-col"}  onClick={() => register}>
+          <div ref={registerFirstName}>
+            <Input placeholder={"FirstName"} />
+          </div>
+          <div ref={registerLastName}>
+            <Input placeholder={"LastName"} />
+          </div>
+          <div className={"flex flex-col"}  onClick={() => register()}>
             <Button content={"S'inscrire"} modifier={"primary"} />
           </div>
         </div>
